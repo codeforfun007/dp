@@ -145,4 +145,98 @@ int main()
 	}
 	return 0;
 }
-====================================================
+====================================================optimal binary search tree========================
+#include <bits/stdc++.h>
+using namespace std;
+int sum(int si , int ei ,vector<int>& f)
+{
+    int val =0;
+
+    for(int i=si ;i<=ei ;i++)
+     val += f[i];
+    
+    
+    return val;
+}
+
+void init(vector<int>&pre , vector<int>&f)
+{
+    for(int i=1 ;i<pre.size() ;i++)
+     pre[i] = pre[i-1] + f[i-1];
+
+}
+int solve2(vector<vector<int>>& dp , vector<int>& f)
+{
+    int n= f.size();
+    
+    vector<int>pre(n+1);
+    pre[0] = 0; // 0 is pushed at front of prefix sum array
+    
+    init(pre,f);
+    for(int gap =0 ;gap <n ;gap++ )
+    {
+        for(int si = 0 ,ei = gap ; ei<n ;si++ ,ei++)
+        {
+           
+            int omin = INT_MAX ; 
+            
+             
+            int my = pre[ei+1] -pre[si];      // dry run this step carefully
+            for(int cut = si ; cut<= ei ;cut++)
+            {
+                int left = si == cut?0:dp[si][cut-1];
+                
+                int right = cut == ei?0:dp[cut+1][ei];
+                
+                int mycost = left + my + right;
+                
+                if(mycost<omin)
+                  omin = mycost;
+                
+            }
+            
+            dp[si][ei] = omin;
+        }
+    }
+     
+    return dp[0][n-1];
+}
+int solve(int si , int ei , vector<vector<int>>& dp , vector<int>& f)
+{
+    if(si>ei)
+     return 0;
+    
+    if(dp[si][ei] != -1)
+      return dp[si][ei];
+
+
+    int omin = INT_MAX;
+    
+    int cur = sum(si , ei , f);
+    for(int cut = si ;cut<=ei ;cut++)
+    {
+        int left = solve(si , cut - 1 , dp , f);
+        
+        int right = solve(cut+1, ei , dp ,f);
+        
+        int mycost = left + cur + right;
+        
+        if(mycost < omin)
+        omin = mycost;
+    }
+    
+    return dp[si][ei] = omin;
+}
+int main() {
+    
+    vector<int>freq ={ 34 ,8,  50};
+    
+    int n  = freq.size();
+    
+    vector<vector<int>>dp(n ,vector<int>(n ,0));
+    
+    //cout<<solve(0 , freq.size()-1 ,dp , freq)<<endl;
+    
+    cout<<solve2(dp , freq);
+	return 0;
+}
