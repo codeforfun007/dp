@@ -1,1 +1,79 @@
-
+int numDecodings(string s) {
+        
+        vector<long>dp(s.size()+1, -1);
+        return solve(0 , s , dp);
+    }
+    const int mod = 1e9+7;
+    long solve(int si , string &s ,vector<long>& dp)
+    {
+        if(si == s.size())
+        {
+            return dp[si] = 1;
+        }
+        
+        if(dp[si]!=-1)
+            return dp[si];
+        
+        char ch = s[si];
+        
+        if(ch == '0')
+            return dp[si] = 0;
+        
+        long count  = 0;
+        
+        if(ch == '*')
+        {
+            count = (count%mod + (solve(si+1 , s , dp)*9)%mod)%mod;
+            
+            if(si+1 < s.size())
+            {
+                char ch2 = s[si+1];
+                
+                if(ch2 == '*')
+                {
+                    count = (count%mod + (solve(si+2 , s , dp)*15)%mod)%mod;
+            
+                }
+                else if(ch2 >= '0' && ch2<= '6')
+                {
+                    count = (count% mod + (solve(si+2,s,dp)*2)%mod)%mod;
+                        
+                }
+                else if(ch2>= '7' && ch2<= '9')
+                {
+                    count = (count% mod + (solve(si+2,s,dp)*1)%mod)%mod;
+                }
+            }
+        }
+            
+        else
+        {
+           count = (count%mod +solve(si + 1 , s , dp)%mod)%mod ;
+            
+            if(si + 1<s.size())
+            {
+                char ch2 = s[si+1];
+                
+                if(ch2 == '*')
+                {
+                    if(ch == '1')
+                    {
+                        count =(count%mod+(solve(si+2 ,s ,dp)*9)%mod)%mod;
+                    }
+                    
+                    if(ch == '2')
+                    {
+                        count =(count%mod+(solve(si+2 ,s, dp)*6)%mod)%mod;
+                    }
+                }
+                else
+                {
+                    int num = (10*(ch-'0') + ch2 - '0');
+                    
+                    if(num>= 10 && num<= 26)
+                        count = (count %mod + solve(si+2 , s,dp)%mod )%mod;
+                }
+            }
+        }
+        return dp[si] = count%mod;
+    }
