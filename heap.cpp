@@ -2,6 +2,7 @@
  
  // see the divide and conquer solution on leetcode solution with O(n) complexity
  
+// also see the quickselect method given in  most voted commnets on leetcode
  struct comp
     {
       bool operator()(const pair<int,int> &a , const pair<int,int> &b)  
