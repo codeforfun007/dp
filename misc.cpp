@@ -168,3 +168,81 @@ int minCut(string s) {
         
        return  dp[si]=omin;
     }
+
+
+//=====leetcode 44 wildcard expression matching ==============
+
+bool isMatch(string s, string p) {
+         
+        string p2 ="";
+    
+        set(p2,p);  //converts a pattern string like  "abc**d?f***" into "abc*d?f*"
+        
+        int n = max(s.size(), p.size());
+        
+        //vector<vector<int>>dp(n+1 , vector<int>(n +1, -1)); also works
+        
+        vector<vector<int>>dp(s.size()+1 , vector<int>(p.size()+1 ,-1));
+        
+        return solve(0 , 0, s , p2 , dp);
+    }
+    
+    int solve(int i , int j , string &s , string & p , vector<vector<int>>&dp)
+    
+    {
+        if(i == s.size() && j == p.size())return dp[i][j] = 1;
+        
+        if(i == s.size() || j == p.size())
+        {
+            if(i != s.size())
+                return dp[i][j] = 0;
+            
+            return dp[i][j] = p[j] == '*' &&  j+1 == p.size();  // if j is not reached at the end of pattern 
+                                                                //then it will match the pattern only if j is at 
+                                                                //last character && the last charater is '*'.
+                                                               // we were able to do this because we have handled the case where
+                                                              // continuous stars are appearing in pattern.
+        }
+        
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        
+        char ch = s[i];
+        char ch2 = p[j];
+        
+        bool res = false;
+        if(ch == ch2 || ch2 =='?')
+        {
+            res = res || solve(i+1 , j+1 , s , p , dp);
+        }  
+        else if(ch2 == '*')
+        {
+            res = res || solve(i+1 , j , s , p , dp); //matching the current character with '*
+            
+            res = res || solve(i , j+1 , s , p , dp); // matching the '*' with empty subsequence
+        }
+        
+        return dp[i][j] = res;
+    }
+    
+    void set(string &p2 , string &p)
+    {
+        bool first = false;
+        
+        for(char ch : p)
+        {
+            if(ch == '*')
+            {
+                if(first == false)p2 += ch;
+                
+                first = true;
+            }
+            else
+            {
+                p2 += ch;
+                
+                first = false;
+            }
+        }
+    }
+}
