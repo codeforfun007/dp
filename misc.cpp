@@ -1,3 +1,4 @@
+// ========decode ways ii  leetcode ============
 int numDecodings(string s) {
         
         vector<long>dp(s.size()+1, -1);
@@ -146,7 +147,7 @@ int minCut(string s) {
         
         return dp[si][ei] = omin;
     }
-    //O(n2) time complexity , O(n3) space complexity , passes all test cases
+    //O(n2) time complexity , O(n) space complexity , passes all test cases
     int solve(int si , int ei, vector<vector<bool>>&is,vector<int>&dp,string &s)
     {
         if(si == ei || is[si][ei] == true)return dp[si]=0;
