@@ -322,3 +322,53 @@ int main()
 	}
 	return 0;
 }
+ // number of subsequences of type aibjck gfg question
+#include<bits/stdc++.h>
+using namespace std;
+
+int solve(string &s)
+{
+    
+    int ai = 0;
+    
+    int aibj = 0;
+    
+    int aibjck = 0;
+    
+    for(char ch : s)
+    {
+        if(ch == 'a')
+        {
+            ai = ai + (1 + ai);
+        }
+        
+        if(ch == 'b')
+        {
+            aibj = aibj + (ai + aibj);
+        }
+        
+        if(ch == 'c')
+        {
+            aibjck = aibjck + (aibj + aibjck);
+        }
+    }
+    
+    return aibjck;
+}
+int main()
+ {
+	//code
+	int t;
+	
+	cin>>t;
+	
+	while(t--)
+	{
+	    string s;
+	    
+	    cin>>s;
+	    
+	    cout<<solve(s)<<endl;
+	}
+	return 0;
+}
