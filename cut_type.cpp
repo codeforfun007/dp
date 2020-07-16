@@ -1,4 +1,4 @@
-===gfg matrix multiplication ================================
+//===gfg matrix multiplication ================================
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -79,7 +79,7 @@ int main()
 	}
 	return 0;
 }
-========Brackets in Matrix Chain Multiplication =====================
+//========Brackets in Matrix Chain Multiplication =====================
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -98,8 +98,9 @@ string solve(vector<int>& v)
             {
                 dp[si][ei] = 0;
         
-                sdp[si][ei] = char(si+'A');
-                continue; // i always for get the base case in tabulation be carefull
+                sdp[si][ei] = char(si+'A');  // adding character to string in c++ is complicated
+		                             // use s(1, (char)(si + 'A'))
+		    continue; // i always forget the base case in tabulation be carefull
             }
             
             int omin=INT_MAX;
