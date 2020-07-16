@@ -372,3 +372,37 @@ int main()
 	}
 	return 0;
 }
+// leetcode 139 word break 
+bool wordBreak(string s, vector<string>& wordDict) {
+        
+        unordered_set<string>d(begin(wordDict),end(wordDict));
+        
+        int maxlen =0 ;
+        
+        int n = s.size();
+        
+        vector<bool>dp(n+1,false);
+        
+      
+        dp[0] =true;
+        
+        for(int i=1;i<=n ;i++)
+        {
+            for(int j = i-1 ;j>= 0 ;j--)
+            { 
+                if(dp[j])                // if word s[0...j] is present in dictionary 
+                {
+                    string word = s.substr(j,i-j);
+                    
+                    if(d.find(word) != d.end()) //  if word s[j.....i] is present in dictionary
+                    {
+                        dp[i] = true;  //only then dp[0......i] is present in dictionary.
+                        break;
+                    }
+                }
+            }
+        }
+        
+       
+        return dp[n];    //return if dp[0.....n-1] is present in dictionary
+    }
