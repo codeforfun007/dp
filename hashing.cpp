@@ -21,3 +21,22 @@ int longestConsecutive(vector<int>& nums) {
         
         return maxlen;
     }
+ 
+// === leetcode 242  valid anagram i.e. return whether s and t are valid anagrams of each other or not
+ bool isAnagram(string s, string t) {
+        if(s.size() != t.size())
+         return false;
+        vector<int>store(26,0);
+        
+        for(int i=0 ;i<s.size() ;i++)
+        {
+            store[s[i]-'a']++;
+            store[t[i]-'a']--;
+        }
+        
+        for(int i : store)
+        if(i != 0 )
+            return false;
+        
+        return true;
+ }
