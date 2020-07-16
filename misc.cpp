@@ -247,3 +247,78 @@ bool isMatch(string s, string p) {
         }
     }
 }
+
+//numeric keypad : gfg ==============
+//https://practice.geeksforgeeks.org/problems/mobile-numeric-keypad/0
+#include<bits/stdc++.h>
+using namespace std;
+
+long total(int n , int idx , vector<vector<int>>& key , vector<vector<long>>&dp , vector<vector<int>>&dir)
+{
+    if(n == 1)
+      return dp[n][idx]=1;
+     
+    if(dp[n][idx]!=0) 
+      return dp[n][idx];
+      
+    int r = idx/3;
+    
+    int c = idx%3;
+    
+    long sum= 0;
+    for(int d = 0; d<dir.size() ; d++)
+    {
+        int x = r + dir[d][0];
+        
+        int y = c+  dir[d][1];
+        
+        if(x>=0 && x<4 && y>=0 && y<3 && key[x][y] != -1)
+        sum += total(n-1 , x*3 +y , key , dp , dir);
+    }
+    
+    return dp[n][idx] = sum;
+    
+}
+long int solve(int n)
+{
+    	vector<vector<int>>key =
+	{ {1,2,3},
+	 {4,5,6},
+	 {7,8,9},
+	 {-1,0,-1}
+	};
+	
+	vector<vector<long>>dp(n+1,vector<long>(12, 0));
+	
+	vector<vector<int>>dir = {{0,0}, {0,-1}, {-1,0},{0,1} , {1,0}};
+	long int sum =0;
+	for(int i=0;i<4; i++)
+	{
+	    for(int j = 0;j<3 ;j++)
+	    {
+	        if(key[i][j] != -1)
+	        sum += total(n , i*3+j,key , dp ,dir);
+	    }
+	}
+	return sum;
+}
+int main()
+ {
+	//code
+	
+	
+
+	int t; 
+	cin>>t;
+	
+	while(t--)
+	{
+	    int n;
+	    cin>>n;
+	    
+	    cout<<solve(n)<<endl;
+	    
+	    //cout<<(long)solve(n)<<endl; also works
+	}
+	return 0;
+}
