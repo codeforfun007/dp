@@ -217,3 +217,76 @@ bool isBipartite(int G[][MAX],int V)
      
      return true;
 }
+// =================gfg toptological sort =========================================================
+
+void dfs(int src , vector<int>adj[] ,vector<int>&vis ,vector<int>&ans)
+{
+    vis[src] = 1;
+    
+    for(int v : adj[src])
+    {
+        if(vis[v] == -1)
+          dfs(v , adj, vis , ans);
+    }
+    
+    ans.push_back(src);
+}
+
+vector<int> bfs(int v,vector<int>adj[])
+{
+    queue<int>q;
+    
+    vector<int>in(v ,0);
+    
+    for(int i=0;i<v ;i++)
+    {
+        for(int x : adj[i])
+        {
+            in[x]++;
+        }
+    }
+    
+    for(int i=0;i<v ;i++)
+    if(in[i] == 0)q.push(i);
+    
+    vector<int>ans;
+    while(!q.empty())
+    {
+        int size = q.size();
+        
+        while(size-- >0)
+        {
+            int cur = q.front();
+            
+            q.pop();
+            
+            ans.push_back(cur);
+            
+            for(int x: adj[cur])
+            {
+                if(--in[x] == 0)
+                 q.push(x);
+            }
+        }
+    }
+    
+    return ans;
+}
+vector<int> topoSort(int V, vector<int> adj[]) {
+    // Your code here
+    
+    vector<int>vis(V,-1);
+    
+    vector<int>ans;
+    
+    /*for(int i =0 ;i<V ;i++)
+    {
+        if(vis[i] == -1)
+          dfs(i , adj ,vis,ans);
+    }
+    reverse(ans.begin(),ans.end());*/
+    
+    ans = bfs(V,adj);
+    
+    return ans;
+}
