@@ -422,3 +422,65 @@ int main()
 	}
 	return 0;
 }
+//===gfg : kosarraju algorithm ============
+void dfs(int src,vector<bool>& vis,vector<int> adj[],vector<int>&top)
+{
+    vis[src] = true;
+    
+    for(int x: adj[src])
+    {
+        if(vis[x] == false)
+          dfs(x,vis,adj,top);
+    }
+    top.push_back(src);
+}
+
+void dfs2(int src , vector<bool>&vis , vector<vector<int>> &rg)
+{
+    vis[src] = true ; 
+    
+    for(int x : rg[src])
+    {
+        if(vis[x] == false)
+          dfs2(x,vis,rg);
+    }
+    
+}
+int kosaraju(int V, vector<int> adj[])
+{
+    // Your code here
+    
+    vector<vector<int>>rg(V);
+    
+    for(int i=0;i<V ;i++)
+    {
+        for(int x :adj[i])
+        {
+            rg[x].push_back(i);
+        }
+    }
+    vector<int>top;
+    
+    vector<bool>vis(V,false);
+    
+    for(int i=0 ;i<V ;i++)
+    {
+        if(vis[i] == false)
+         dfs(i,vis,adj,top);
+    }
+    
+    vector<bool>vis2(V,false);
+    
+    int scc= 0;
+    
+    for(int i=top.size()-1 ;i>=0 ;i--)
+    {
+        if(vis2[top[i]] == false)
+        {
+            dfs2(top[i] ,vis2 ,rg);
+            scc++;
+        }
+    }
+    
+    return scc;
+}
