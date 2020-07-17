@@ -290,3 +290,43 @@ vector<int> topoSort(int V, vector<int> adj[]) {
     
     return ans;
 }
+ //gfg :dijkstra on adjacency matrix
+vector <int> dijkstra(vector<vector<int>> g, int src, int V)
+{
+    // Your code here
+    
+    priority_queue<vector<int> , vector<vector<int>> ,greater<vector<int>>>pq;
+    
+    pq.push({0,src});  //distance,src;
+    
+    vector<int>dist(V,0);
+    
+    vector<int>vis(V ,-1);
+    
+    while(!pq.empty())
+    {
+        vector<int> cur = pq.top();
+        
+        pq.pop();
+        
+        if(vis[cur[1]] == 1)
+          continue;
+        
+        int vtx = cur[1];
+        
+        int dis = cur[0];
+        
+        dist[vtx] =  cur[0];
+        
+        vis[vtx] = 1;
+        
+        for(int i = 0;i<V ;i++)
+        {
+            if(g[vtx][i] != 0 && vis[i] == -1)
+              pq.push({ g[vtx][i] + dis,i });
+        }
+        
+        
+    }
+    return dist;
+}
