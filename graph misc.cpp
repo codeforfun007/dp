@@ -484,3 +484,57 @@ int kosaraju(int V, vector<int> adj[])
     
     return scc;
 }
+
+// leetcode bridges in graph 
+vector<vector<int>>ans;
+    int maxn =100005 ;
+   int lvl[100005];
+   vector<int>g[100005];
+    int dp[100005];
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        
+        for(vector<int> a: connections)
+        {
+            g[a[0]].push_back(a[1]);
+            
+            g[a[1]].push_back(a[0]);
+        }
+        
+        lvl[0] = 1;
+        
+        
+        dfs(0 , -1 );
+        
+        return  ans;
+    }
+    
+    void dfs(int src ,int par)
+    {
+        
+        
+        for(int child : g[src])
+        {
+            if(lvl[child] == 0)//span edge
+            {
+                lvl[child] = lvl[src] + 1;
+                
+                dfs(child , src);
+                
+                dp[src] += dp[child];
+            }
+            else if(lvl[child] < lvl[src])
+            {
+                dp[src]++;
+            }
+            else if(lvl[child] > lvl[src])
+            {
+                dp[src]--;
+            }
+        }
+            
+            dp[src]--;  //for the edge between src and par
+            
+            
+            if(lvl[src] >1 && dp[src] == 0)
+                ans.push_back({par,src});
+    }
