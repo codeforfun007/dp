@@ -151,4 +151,69 @@ int main()
 	}
 	return 0;
 }
+ 
+// bipartite graph : gfg medium level 
+bool solve(int src,int G[][MAX] , int V , vector<int>&vis)
+{
+     queue<int>q;
+     
+     q.push(src);
+     
+     int lvl =0;
+     
+     while(!q.empty())
+     {
+         int size = q.size();
+         
+         while(size -->0)
+         {
+             int cur = q.front();
+             
+             q.pop();
+             
+             if(vis[cur] != -1)
+             {
+                 if(vis[cur] != lvl%2)
+                   return false;
+                 continue;
+             }
+             
+             vis[cur] = lvl%2;
+             
+             for(int i = 0 ;i<V;i++)
+             {
+                 if( G[cur][i] == 1)   
+                 {
+                     if(cur == i)  //if there is a self loop then it can't be bipartite
+			           //the code would have worked fine even without it
+			           //provided that vis check is not made at this location
+                       return false;
+                     q.push(i);
+                 }
+             }
+         }
+         lvl++;
+     }
+     
+     return true;
+}
+/*The function takes an adjacency matrix representation of the graph (g)
+and an integer(v) denoting the no of vertices as its arguments.
+You are required to complete below method */
+bool isBipartite(int G[][MAX],int V)
+{
+     //Your code here 
+     vector<int>vis(V ,-1); //-1 signifies as an unvisited vertice
+     
+     bool res =true;
+     for(int i=0;i<V ;i++)
+     {
+         if(vis[i] == -1)  
+         res = res && solve(i,G,V ,vis); //check bipartiteness of each connected component
+         
+         if(res == false)
+           return res;
+     }
+     
+     return true;
 }
