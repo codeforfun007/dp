@@ -66,3 +66,89 @@ string findOrder(string dict[], int N, int K) {
     
     return ans;
 }
+
+//gfg snake and ladder : minimum "dice throws" to reach destination
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int solve(int src , int dest , vector<int>& go)
+{
+    
+    queue<int>q; 
+    
+    q.push(src); 
+    
+    int lvl = 0;
+    
+    int ans = INT_MAX;
+    
+    vector<bool>vis(31 , false) ; 
+    
+    while(!q.empty())
+    {
+        
+        int size = q.size();
+        
+        while(size -- >0)
+        {
+            int cur= q.front();
+            
+            q.pop();
+            
+            if(cur == 30)
+             {
+            
+                return lvl;
+             }
+             
+             vis[cur] =true; //since we can come to one state multiple times so this marking and unmarking of vis can be skipped
+            
+        
+             
+            for(int i = 1;i<= 6; i++)
+            {
+                if(cur+i <= 30 && vis[cur+i] ==false)
+                {
+                    if(go[cur+i] != -1)  // if there is a snake or ladder at current position
+                                         //then don't count this as dice throw and skip to the resulting position
+                     q.push(go[cur+i]);
+                    
+                    else
+                     q.push(cur+i );
+                }
+            }
+        }
+        
+        lvl++;
+    }
+    
+    return -1;
+}
+int main()
+ {
+	//code
+	
+	int t;
+	
+	cin>>t;
+	
+	while(t--)
+	{
+	    int n ;
+	    cin>>n;
+	    
+	    vector<int>go(31 ,-1);
+	    for(int i=1 ;i<=n ;i++)
+	    {
+	        int a,b;
+	        cin>>a>>b;
+	        
+	        go[a] =b;
+	    }
+	    
+	    cout<<solve(1 , 30  ,go)<<endl;
+	}
+	return 0;
+}
+}
