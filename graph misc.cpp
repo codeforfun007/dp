@@ -330,3 +330,95 @@ vector <int> dijkstra(vector<vector<int>> g, int src, int V)
     }
     return dist;
 }
+// gfg : minimum steps by knight to reach from given src pos to given tar pos
+//constraints
+/*1<=T<=100
+1<=N<=20   //1 based indexing
+1<=knight_pos,targer_pos<=N*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<vector<int>>dir = {{-2,1},{-2,-1},{1,-2},{-1,-2},{2,1},{2,-1},{1,2},{-1,2}};
+int solve(int s ,int t ,int n)
+{
+    queue<int>q;
+    
+    q.push(s);
+    
+    vector<bool>vis(n*n,false);
+    
+    int lvl =0 ;
+    
+    while(!q.empty())
+    {
+        int size = q.size();
+        
+        while(size-- >0)
+        {
+            int cur = q.front();
+            
+            q.pop();
+            
+            if(cur == t)
+            {
+                return lvl;
+            }
+            
+    
+             vis[cur] = true;
+            
+            int r = cur/n;
+            
+            int c = cur%n;
+        
+            for(int d = 0;d<dir.size() ;d++)
+            {
+                int x = r + dir[d][0];
+                
+                int y = c + dir[d][1];
+                
+                if(x>=0 && x<n && y>=0 && y<n && vis[x*n+y]== false)
+                {
+                    vis[x*n+y] = true;
+                    q.push(x*n+y);
+                }
+            }
+        }
+        lvl++;
+    }
+    return -1;
+}
+int main()
+ {
+	//code
+	int t;
+	
+	cin>>t;
+	
+	while(t--)
+	{
+	    int n;
+	    cin>>n;
+	    
+	     pair<int,int>k;
+	     cin>>k.first>>k.second;
+	     
+	     k.first--; //converting 1 based indexing to 0 based
+	     k.second--;
+	     
+	     int src = k.first*n+k.second;
+	     
+	     
+	     pair<int,int>t;
+	     cin>>t.first>>t.second;
+	     
+	     t.first--;  //converting 1 based indexing to 0 based
+	     t.second--;
+	     
+	     int dest = t.first*n+t.second;
+	     
+	     cout<<solve(src,dest , n)<<endl;
+	}
+	return 0;
+}
