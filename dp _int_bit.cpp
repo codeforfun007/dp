@@ -90,3 +90,34 @@
         
         return dp[p1][p2]=false;
     }
+//leetcode 10 :  regular expression matching 
+
+/*Input:
+s = "aab"
+p = "c*a*b"
+Output: true*/
+
+/*Input:
+s = "mississippi"
+p = "mis*is*p*."
+Output: false*/
+bool isMatch(string s, string p) {
+        
+        vector<vector<int>>dp(s.size()+1,vector<int>(p.size()+1,-1));
+        return isMatch(0,s,0,p,dp);    
+    }
+    bool isMatch(int i, string& s, int j, string &p,vector<vector<int>>&dp) {
+        int pn=p.size(), sn = s.size();
+        
+        if(j==pn) return i==sn;
+        
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        
+        if(p[j+1]=='*') {
+            if(isMatch(i,s,j+2,p,dp) || 
+               i<sn && (p[j] == '.' || s[i] == p[j]) && isMatch(i+1,s,j,p,dp)) return dp[i][j]=1;
+        }
+        else if (i<sn && (p[j]=='.'|| s[i]==p[j]) && isMatch(i+1,s,j+1,p,dp)) return dp[i][j]=1;
+        return dp[i][j]= 0;
+    }
