@@ -183,3 +183,32 @@ bool isScramble(string s1, string s2) {
         
         return true;
     }
+//============tushar's birtday bombs problem interview bit=============
+vector<int> bday(int R, vector<int>& p) {
+	int n = (int)p.size();
+	vector<int> dp(R + 1, -1);
+	vector<int> back(R + 1);
+
+	back[0] = 0;
+	for (int r = 0; r <= R; r++) {
+		for (int i = 0; i < n; i++) {
+			if (r >= p[i] && dp[r] < dp[r - p[i]] + 1) {
+				dp[r] = dp[r - p[i]] + 1;
+				back[r] = i;
+			}
+		}
+	}
+
+	vector<int> ans;
+	int r = R;
+	while (r >= 0 && (r - p[back[r]]) >= 0) {
+		ans.push_back(back[r]);
+		r = r - p[back[r]];
+	}
+	return ans;
+}
+/*The lexicographic constraint is solved by using dp[r] < dp[r - p[i]] + 1 (i.e. use < instead of <=), then for a
+specific resistance you save the index of the kick power that gives you the maximum number of kicks
+for that resistance (thus, by going backward you generate the steps back). Furthermore, since the kicks 
+have to be smaller than the resistance we have to do this while (r >= 0 && (r - p[back[r]]) >= 0) when 
+you generate the answer.*/
