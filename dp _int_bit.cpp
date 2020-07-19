@@ -434,3 +434,77 @@ int Solution::solve(vector<vector<int> > &A) {
     
     return ans == -231 ?-1 :ans;
 }
+
+// ======leetcode 329 : longest increasing path in a matrix===
+
+int longestIncreasingPath(vector<vector<int>>& matrix) {
+        
+        
+        int m = matrix.size();
+        if(m == 0)return 0;
+        int n = matrix[0].size();  //trivial case
+        vector<vector<int>>dir = {{0,1},{1,0},{0,-1},{-1,0}};
+        
+        vector<vector<int>>in(m , vector<int>(n,0));
+        for(int i=0;i<m ;i++)
+        {
+            for(int j=0;j<n ;j++)
+            {
+                int cur = matrix[i][j];
+                
+                for(int d=0;d<4;d++)
+                {
+                    int x = i+dir[d][0];
+                    int y = j+dir[d][1];
+                    
+                    if(x>=0 && x<m &&y>=0 && y<n &&matrix[x][y]>matrix[i][j])
+                    {
+                        in[x][y]++;
+                    }
+                        
+                }
+            }
+        }
+        queue<int>q;
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(in[i][j] == 0)
+                    q.push(i*n+j);
+            }
+        }
+        int level = 0;
+        while(!q.empty())
+        {
+            int size = q.size();
+            
+            while(size-- >0)
+            {
+                int cur = q.front();
+                
+                
+                
+                q.pop();
+                
+                int r = cur/n;
+                
+                int c = cur%n;
+                
+                for(int d=0;d<dir.size();d++)
+                {
+                    int x = r + dir[d][0];
+                    
+                    int y = c + dir[d][1];
+                    if(x>=0&&x<m &&y>=0 &&y<n &&matrix[x][y]>matrix[r][c])
+                    {
+                        if(--in[x][y] == 0)
+                            q.push(x*n+y);
+                    }
+                }
+            }
+            level++;
+        }
+        
+        return level;
+    }
