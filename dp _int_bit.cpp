@@ -354,3 +354,83 @@ int Solution::solve(const vector<int> &A) {
     return omax;
 }
 
+//=== increasing path in a matrix=========
+//actually the exact question is if there is an increasing path which starts from (0,0) and takes to bottom right corner of matrix
+//then return the length of longest such path if there does not exist such path then return -1
+  //it is partially accepted solution
+
+//note : we were asked to find the longest increasing path in a matrix starting from any cell
+//then it would have been a topological sort(kahn's algo) problem
+
+int solve2(int r,int c ,int rs,int cs , vector<vector<int>>&A,vector<vector<int>>&dp)
+{
+    //botttom up solution
+    for(int r = rs ;r>=0 ;r--)
+    {
+        for(int c = cs;c>=0 ;c--)
+        {
+            if(r == rs && c==cs)
+            {
+                dp[r][c] = 0;
+                continue;
+            }
+            int omax = -231;
+    
+           if(r+1<=rs && A[r+1][c] >A[r][c])
+             {
+              int op1 = max(omax,dp[r+1][c]);
+              if(op1 != -231 && op1+1>omax)
+                 omax = op1 + 1;
+             }
+             
+            if(c+1<=cs && A[r][c+1]>A[r][c])
+             {
+               int op2 = max(omax,dp[r][c+1]);
+               if(op2 != -231 && op2+1>omax)
+                 omax = op2+1;
+            }
+            
+            dp[r][c]  = omax;
+            
+        }
+    }
+    return dp[0][0];
+	
+	//top _down solution
+    /*if(r == rs && c == cs)
+      return dp[r][c] = 0;
+    
+    if(dp[r][c] != -1)
+      return dp[r][c];
+    
+    
+    long int omax = -231;
+    
+    if(r+1<=rs && A[r+1][c] >A[r][c])
+      {
+          long int op1 = max(omax,solve2(r+1,c,rs,cs,A,dp));
+          if(op1 != -231 && op1+1>omax)
+            omax = op1 + 1;
+      }
+    if(c+1<=cs && A[r][c+1]>A[r][c])
+    {
+         long int op2 = max(omax,solve2(r,c+1,rs,cs,A,dp));
+         if(op2 != -231 && op2+1>omax)
+           omax = op2+1;
+    }
+    return dp[r][c] = omax;*/
+}
+int Solution::solve(vector<vector<int> > &A) {
+    
+    
+    int  rs = A.size();
+    if(rs == 0)
+      return 0;
+    int  cs = A[0].size();
+    if(rs == 1 && cs == 1)  //trivial case
+      return 1;
+    vector<vector<int>>dp(rs,vector<int>(cs,-1));
+    int ans =solve2(0,0,rs-1,cs-1,A,dp);
+    
+    return ans == -231 ?-1 :ans;
+}
