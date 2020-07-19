@@ -1,4 +1,6 @@
-//==got TLE======== A C = 7/9
+//nqueen leetcode :return all the distinct solutions
+
+//==method i :got TLE======== A C = 7/9
 
 vector<vector<string>>sol;
     vector<vector<string>> solveNQueens(int n) {
@@ -216,5 +218,78 @@ public:
         } 
         
         q_place_comb(idx+1,qpsf,n , box);
+    }
+};
+//nqueen ii leetcode return the number of solutions
+    
+  vector<int> row(20,0); //when they were declared inside the class it gave an error called expected the parameter declarator
+    vector<int> col(20,0);
+    vector<int> diag(20,0);
+    vector<int> adiag(20,0);
+
+
+class Solution {
+public:
+    
+    int totalNQueens(int n) {
+        
+        vector<string>box(n,string(n,'.'));
+        return q_place_comb(0,0,n,box);
+        
+    }
+    
+      bool canplace2(int r,int c,vector<string>&box)
+    {
+        if(row[r] == true || col[c] == true || diag[r-c+box.size()-1] == true || adiag[r+c] == true)
+             return false;
+        
+        return true;
+    }
+   
+
+    int q_place_comb(int idx , int qpsf , int n ,vector<string>& box)
+    {
+        if(idx == n*n || qpsf == n)
+        {
+            if(qpsf == n)
+            {
+                
+                
+                return 1;
+            }
+            return 0;
+        }
+        
+        int r = idx/n;
+        
+        int c = idx%n;
+        int count =0;
+        if(canplace2(r,c,box))
+        {
+             row[r] = true;
+            
+             col[c] = true;
+            
+             diag[r-c+box.size()-1]= true;
+            
+             adiag[r+c] = true;
+            
+             box[r][c] ='Q';
+            
+             count+=q_place_comb(idx+1 , qpsf+1 , n,box );
+            
+             row[r] = false;
+             
+             col[c] = false;
+            
+             diag[r-c+box.size()-1]= false;
+            
+            adiag[r+c] = false;
+             
+            box[r][c] ='.';
+        } 
+        
+        count+=q_place_comb(idx+1,qpsf,n , box);
+        return count;
     }
 };
