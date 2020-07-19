@@ -212,3 +212,110 @@ specific resistance you save the index of the kick power that gives you the maxi
 for that resistance (thus, by going backward you generate the steps back). Furthermore, since the kicks 
 have to be smaller than the resistance we have to do this while (r >= 0 && (r - p[back[r]]) >= 0) when 
 you generate the answer.*/
+
+
+
+
+
+== // jump game array interview bit===============
+bool solve(int si , vector<int>&A ,vector<int>&dp)
+{
+    if(si == A.size())
+      return true;
+      
+    if(dp[si] != -1)
+      return dp[si];
+    bool res = false;
+    
+    for(int jump= 1;jump<=A[si];jump++)
+    {
+        if(jump+si<= A.size())
+        {
+            res = res || solve(jump+si,A,dp);
+            if(res == true )
+             return dp[si]=true;
+        }
+    }
+    
+    return dp[si]=false;
+}
+
+
+int Solution::canJump(vector<int> &A) {
+    
+    if(A.size() == 1)return 1;   //trivial case : had to be handled explicitly
+    vector<int>dp(A.size(),-1);
+    return solve(0, A,dp);
+}
+
+
+//=====min jump array problem(assuming that there is a possiblity u won't reach the end)
+
+//dry run before implimenting the solution
+int Solution::jump(vector<int> &A) {
+    
+    int n= A.size();
+    if(A.size() <= 1)
+      return 0;
+      
+    if(A[0] == 0)
+      return -1;
+    
+    int maxreach = A[0];
+    int step = A[0];
+    int jump = 1;
+    
+    for(int i=1;i<n; i++)
+    {
+        if(i == n-1)
+          return jump;
+        maxreach = max(maxreach , A[i]+i);
+        
+        step--;
+        
+        if(step == 0)
+        {
+            jump++;
+            
+            if(i>=maxreach)
+              return -1;
+            
+            step = maxreach - i ;
+        }
+    }
+    return jump;
+}
+//dp :memoisation solution
+int solve(int si ,vector<int>&A , vector<int>&dp)
+{
+    if(si == (A.size()-1))
+      return 0;
+      
+    if(dp[si] != -1)
+       return dp[si];
+       
+    int omin = INT_MAX;
+    
+    for(int i=1 ;i<= A[si] ;i++)
+    {
+        if(si+i < A.size())
+        {
+            int rec = solve(si+i , A, dp);
+            
+            if(rec != INT_MAX && rec+1 <omin)
+              omin = rec+1;
+        }
+    }
+    return dp[si] = omin;
+}
+ 
+int Solution::jump(vector<int> &A) {
+    
+    if(A.size() == 1 )return 0;
+    
+    vector<int>dp(A.size(),-1);
+    
+    int ans = solve(0,A,dp);
+    
+    return ans  == INT_MAX? -1 :ans ;
+}
