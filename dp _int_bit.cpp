@@ -316,6 +316,41 @@ int Solution::jump(vector<int> &A) {
     vector<int>dp(A.size(),-1);
     
     int ans = solve(0,A,dp);
+
     
     return ans  == INT_MAX? -1 :ans ;
 }
+
+//=== longest arithmetic progression =====
+
+int Solution::solve(const vector<int> &A) {
+    
+    int n= A.size();
+    unordered_map<int,unordered_map<int,int>>diff; //idx,diff ,length
+    int omax =0;
+     
+    if(n == 1)  //trivial case: had to be handled explicitly
+	        //our code manages the cases where n>=2
+      return 1;
+    
+    for(int  i=0;i<n ;i++)
+    {
+        for(int j=i-1 ;j>=0 ;j--)
+        {
+            int d = A[i]-A[j];
+            
+            if(diff[i].find(d) == diff[i].end())
+            {
+                diff[i][d] = 2;
+            }
+           
+            diff[i][d] = max(diff[j][d]+1,diff[i][d]);
+            
+            if(omax<diff[i][d])
+              omax = diff[i][d];
+        }
+    }
+    
+    return omax;
+}
+
