@@ -152,3 +152,97 @@ public:
  * obj->addWord(word);
  * bool param_2 = obj->search(word);
  */
+//==============leetcode 212 : worde seach ii =================
+
+
+class Solution {
+public:
+    class node
+{
+    public:
+    int wordend =0;
+    vector<node*>child;
+    string word = "";
+        
+    node()
+    {
+        wordend = 0;
+        child.assign(26,NULL);
+        this->word ="";
+    }
+};
+node * root = NULL;
+void add(string word)
+{
+    int n = word.size();
+    node* cur = root;
+    
+    for(int i=0;i<n;i++)
+    {
+        int idx = word[i]-'a';
+        
+        if(cur->child[idx] == NULL)
+            cur->child[idx] = new node();
+        
+        cur = cur->child[idx];
+    }
+    cur->wordend++;
+    cur->word = word;
+}
+vector<string>ans;
+
+vector<vector<int>>dir = {{0,1},{1,0},{-1,0},{0,-1}};
+
+void dfs(int r ,int c ,node * cur,vector<vector<char>>& board)
+{
+   if(cur->wordend>0)
+   {
+       ans.push_back(cur->word);
+       cur->wordend = 0;
+   }
+    char ch = board[r][c];
+    board[r][c] ='$';
+    
+    for(int d = 0;d<dir.size();d++)
+    {
+        int x = r + dir[d][0];
+        int y = c + dir[d][1];
+        
+        if(x>=0 && y>=0 && x<board.size() && y<board[0].size() && board[x][y] != '$' && cur->child[board[x][y]-'a']!= NULL)
+            dfs(x , y,cur->child[board[x][y]-'a'],board);
+    }
+    
+    board[r][c] = ch;
+}
+
+
+
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        
+        root = new node();
+        
+        for(string x:words)
+        {
+            add(x);
+        }
+        
+        int n = board.size();
+        int m = board[0].size();
+        node* cur = root;
+        for(int i=0;i<n ;i++)
+        {
+            for(int j=0;j<m ;j++)
+            {
+                int idx = board[i][j] - 'a';
+                
+                if(cur->child[idx]!= NULL)
+                {
+                    
+                    dfs(i , j,cur->child[idx],board );
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
