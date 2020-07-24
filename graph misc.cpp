@@ -486,6 +486,13 @@ int kosaraju(int V, vector<int> adj[])
 }
 
 // leetcode bridges in graph 
+
+//easy definition of bridge: A brigde is an edge whose 
+//removal results in increament of number of cc 
+//in a graph.
+
+//dfs tree definition :An edge {src,par} is a bridge if there is no back edge
+//between any descedant of src to any ancestor of {src,par} edge.
 vector<vector<int>>ans;
     int maxn =100005 ;
    int lvl[100005];
@@ -538,3 +545,110 @@ vector<vector<int>>ans;
             if(lvl[src] >1 && dp[src] == 0)
                 ans.push_back({par,src});
     }
+
+
+
+// ==========gfg : doctor strange ========================
+
+//basically finding the articulation points in the graph
+//articulation point simple definition: It is a vertex whose removal 
+//increases the number of connected components of a graph.
+
+//articulation point dfs definition : A vertice is "not" said to be 
+//an articulation point if there is a back edge for "all" the children of 
+//that vertex which connects them to ancestor of given vertex.
+
+//otherwise the given vertex is an articulation point.
+#include<bits/stdc++.h>
+using namespace std;
+
+/*practice test case:
+1 2
+2 3
+1 3
+1 5
+3 4*/
+int ap;
+unordered_set<int>ans;
+vector<vector<int>>g(30005);
+vector<bool>vis;
+
+vector<int>low(30005);
+vector<int>in(30005);
+int timer =1;
+void dfs_ap(int src,int par)
+{
+    low[src] = timer;
+    in[src]  = timer;
+    vis[src] = true;
+    timer++;
+    
+    int child = 0;  //we don't count the total number of children of each node we
+                   //count the number of nodes which form span edges with each node
+                   //this step is done for checking if root is an articulation point
+    for(int x: g[src])
+    {
+        
+        if(x == par)
+         continue;
+        if(vis[x] == true)
+        low[src] = min(low[src],in[x]);
+        else
+        {
+            dfs_ap(x,src);
+            
+            low[src] = min(low[src],low[x]);
+            
+            if(low[x]>=in[src] && par != -1)  //for bridge the condition is low[x]>in[src]
+             ans.insert(src);                 // if above condition is true {src,x} is a bridge
+            
+            ++child;  //counting span edges for root
+        }
+    }
+    if( par == -1 && child>1)         //if it is a root with more than 1 span edges
+	 ans.insert(src);              //this part is not present in brigde finding
+    
+}
+int main()
+ {
+	//code
+	
+	int t;
+	cin>>t;
+	
+	while(t--)
+	{
+	    int n,m;
+	    cin>>n>>m;
+	    
+	    ap =0 ;
+	    timer =1;
+	    
+	    vis.assign(n+1,false); 
+	    //if the graph is globally declared as vector<vector<int>>g we can even do this:
+	    //g.assign(n+1,{});
+	    
+	    for(int i=0;i<m ;i++)
+	    {
+	        int p,q;
+	        cin>>p>>q;
+	        
+	        g[p].push_back(q);
+	        g[q].push_back(p);
+	        
+	    }
+	  
+	     for(int i=1;i<=n;i++)//we have to find the APs for all connected components
+	     if(vis[i] == false)
+	       dfs_ap(i,-1);
+	       
+	    cout<<ans.size()<<endl;
+	    
+	    for(int i=1;i<= n ;i++) //this is an important step
+	        g[i].clear();        //it was giving TLE without this step
+	                            //you have to clear the adjacency list of all the vertices.
+	    
+	   ans.clear();
+	}
+	return 0;
+}
