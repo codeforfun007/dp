@@ -1,4 +1,4 @@
-//======leetcode 208===========================
+//======leetcode 208 : impliment tries===========================
 class node
 {
     public :
@@ -73,7 +73,7 @@ public:
     }
 };
 
-//== leetcode 211====================================
+//== leetcode 211 : add and search word====================================
  class node{
     public:
     int wordend = 0;
@@ -244,5 +244,52 @@ void dfs(int r ,int c ,node * cur,vector<vector<char>>& board)
         }
         
         return ans;
+    }
+};
+//======leetcode 79 : word search =========================
+//======we just have to search one word from board ==========
+
+//so we don't need to make tries and keep the list of word. 
+// a simple dfs with a little backtracking to ensure that not to 
+//visit already visited word will be sufficient.
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        
+        int n = board.size();
+        int m = board[0].size();
+        bool res = false;
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(board[i][j] == word[0])
+                 res = res||   dfs(i , j , 1 , word , board);
+            }
+        }
+        return res;
+    }
+    vector<vector<int>>dir = {{-1,0},{0,-1} ,{1,0},{0,1}};
+    bool dfs(int r ,int c , int idx , string &word ,vector<vector<char>>& board )
+    {
+        if(idx == word.size())
+            return true;
+        
+        char ch2 = board[r][c];
+        board[r][c] = '$';
+        char ch = word[idx];
+        bool res = false;
+        for(int d = 0;d<dir.size();d++)
+        {
+            int x = dir[d][0] + r;
+            int y = dir[d][1] + c;
+            
+            if(x >=0 && y>=0 && x<board.size() && y<board[0].size() && board[x][y]== ch )
+               res= res|| dfs( x ,y ,idx+1 , word,board);
+        }
+        
+        board[r][c] = ch2;
+        return res;
     }
 };
