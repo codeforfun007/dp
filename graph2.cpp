@@ -165,3 +165,23 @@ int main()
 	}
 	return 0;
 }
+
+//see the tarzan's algorihtm to find SCCs.
+//it is based on the standard low and in vectors
+//we maintain them same for both cases when it is a
+//span edge and when it is a back edge as we do in 
+//case of bridge
+//in that algo we basically find the leader of each scc
+//which basically is the root of dfs tree.
+//for each vtx in dfs tree we keep on pushing it 
+//into the stack. And then we check
+//(if low[src] == in[src] )it means that it is head
+//of the scc. so we keep popping elements from stack and printing them until
+//stack is empty because they are part of same scc as the head(root).
+
+
+
+//what is a biconnected component: A graph is biconnected component if there 
+//exists a cycle between all pairs of vertices of that graph.
+//algorithmically : if the graph is connected and it does not have articulation 
+//points it is said to be a biconnected component.
