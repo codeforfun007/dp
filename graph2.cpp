@@ -185,3 +185,60 @@ int main()
 //exists a cycle between all pairs of vertices of that graph.
 //algorithmically : if the graph is connected and it does not have articulation 
 //points it is said to be a biconnected component.
+
+//police chase cses graph algo problem
+//passed 7/12 test cases
+//see edge connectivity algo on cp algorithms
+#include <bits/stdc++.h>
+using namespace std;
+vector<int>par;
+
+
+int find(int u)
+{
+    if( u == par[u])
+    return u;
+    
+    return par[u] = find(par[u]);
+}
+int main() {
+	// your code goes here
+	
+	int n,m;
+	cin>>n>>m;
+	
+	for(int i=0;i<=n;i++)
+	par.push_back(i);
+	
+	vector<vector<int>>sol;
+	int ans= 0 ;
+	for(int i=0;i<m ;i++)
+	{
+	    int u,v;
+	    cin>>u>>v;
+	    
+	    int pu = find(u);
+	    int pv = find(v);
+	    
+	    if(pu != pv)
+	    {
+	        par[max(pu,pv)] = min(pu ,pv);
+	        find(u);
+	    }
+	    
+	    if(par[1]== par[n])
+	    {
+	        ans++;
+	        sol.push_back({u,v});
+	        par[pu] = pu;
+	        par[u] = pu;
+	    }
+	}
+	
+	cout<<ans<<endl;
+	
+	for(vector<int>a : sol)
+	cout<<a[0]<<" "<<a[1]<<endl;
+	
+	return 0;
+}
