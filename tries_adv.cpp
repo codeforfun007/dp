@@ -1,3 +1,5 @@
+//shortest unique prefix of all the words provided in the dictionary
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -87,3 +89,77 @@ int main(){
 
 	return 0;
 }
+
+//leetcode 421: max xor pair of two numbers in array
+
+
+class node
+{
+    public:
+    vector<node*>child;
+    int wordend;
+    
+    node()
+    {
+        this->child.assign(2,NULL);
+        wordend=0 ;
+    }
+};
+
+node* root = NULL;
+
+void insert(int& num)
+{
+    node* cur = root;
+    
+    for(int i=31;i>=0 ;i--)
+    {
+        int idx = (num>>i)&1;
+        if(cur->child[idx] == NULL)cur->child[idx] = new node();
+        
+        cur = cur->child[idx];
+    }
+    cur->wordend++;
+}
+
+int max_xor(int& num)
+{
+    node* cur = root;
+    
+    int ans =0;
+    for(int i=31 ;i>=0 ;i--)
+    {
+        int idx = (num>>i)&1;
+        
+        int comp = (!idx);
+        if(cur->child[comp] != NULL)
+        {
+            ans += (1<<i);  //2^i
+            cur = cur->child[comp];
+        }
+         else if(cur->child[idx]!= NULL)
+        {
+             //ans += 0*..
+            cur = cur->child[idx];
+        }
+        else
+            return ans;
+    }
+    return ans;
+}
+class Solution {
+public:
+    int findMaximumXOR(vector<int>& nums) {
+        
+        root = new node();
+        
+        for(int x : nums)
+         insert(x);
+    
+        int res =0;
+        for(int x : nums)
+            res = max(res , max_xor(x));
+        
+        return res;
+    }
+};
