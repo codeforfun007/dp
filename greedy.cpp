@@ -162,3 +162,50 @@ void solve()
 int main() {
     solve();
 }
+
+//spoj : load balancing problem (great problem)
+#include<bits/stdc++.h>
+
+using namespace std;
+void solve()
+{
+    
+    while(-1)
+    {
+        int n;
+       cin>>n;
+       if(n == -1)  //different type of input 
+         return;
+    vector<int>v(n);
+    
+    int check =0;
+    for(int i=0;i<n;i++)
+     cin>>v[i],check += v[i];
+    
+    if(check % n != 0)
+     {
+         cout<<"-1"<<endl;
+         continue;
+     }
+    int req_sum = (check/n);
+    int sum = 0;
+    int min_round_req = 0;
+    int ans = 0;
+
+    for(int i = 0;i<n;i++)
+    {
+        sum += v[i];
+
+        min_round_req = abs(sum - (req_sum)*(i+1));
+
+        ans = max(ans , min_round_req);
+    }
+    cout<<ans<<endl;
+    }
+}
+int main(){
+
+   solve();
+
+	return 0;
+}
