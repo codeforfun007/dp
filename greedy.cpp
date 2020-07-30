@@ -117,6 +117,8 @@ int main() {
 }
 
 //solution using counting sort : O(n)
+//since the element range is 1 to n w
+//we can therefore apply counting sort
 
 #include <bits/stdc++.h>
 using namespace std;
