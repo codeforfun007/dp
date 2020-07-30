@@ -163,3 +163,95 @@ public:
         return res;
     }
 };
+
+//maximum xor of subarray of an array problem
+#include<bits/stdc++.h>
+using namespace std;
+
+class node
+{
+    public:
+    vector<node*>child;
+    node()
+    {
+        this->child.assign(2,NULL);
+    }
+};
+node* root = NULL;
+void insert(int &num)
+{
+    node* cur = root;
+    
+    for(int i=31;i>=0 ;i--)
+    {
+        int idx = (num>>i)&1;
+       
+       if(cur->child[idx] == NULL)cur->child[idx] =new node();
+
+       cur = cur->child[idx];
+    }
+}
+
+int max_xor(int &num)
+{
+    node* cur = root;
+    int ans =0;
+    for(int i=31;i>=0 ;i--)
+    {
+        int idx = (num>>i)&1;
+        int comp = (!idx);
+
+        if(cur->child[comp] != NULL)
+        {
+           ans += (1<<i);
+           cur = cur->child[comp];
+        }
+        else if(cur->child[idx] != NULL)
+        {
+            cur = cur->child[idx];
+        }
+        else
+          return ans;
+    }
+    return ans;
+}
+
+void solve()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+    root = new node();  //node* root = new node() gave segmentation error because root is a global variable
+                        //and we tried to declare it here again
+    int n;
+    cin>>n;
+
+    vector<int>v(n);
+    vector<int>comm(n);
+    for(int i=0;i<n;i++)
+      cin>>v[i];
+    comm[0] = v[0];
+
+    for(int i=1;i<n;i++)
+      comm[i] =(v[i]^comm[i-1]);
+    
+    for(int x :comm)
+      insert(x);
+    
+    int res = 0;
+
+    for(int x : comm)
+     res = max(res,max_xor(x));
+
+    cout<<res<<endl;
+     root = NULL;
+    }
+
+}
+int main(){
+
+   solve();
+
+	return 0;
+}
