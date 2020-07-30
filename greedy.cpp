@@ -42,3 +42,121 @@ int main() {
     solve();
 }
 
+//biased standing :spoj problem sorting solution O(n)
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve()
+{
+    int t;
+    cin>>t;
+
+   while(t--)
+   {
+       int n;
+       cin>>n;
+
+       vector<int>v(n);
+       for(int i = 0;i<n; i++)
+       {
+           string s;
+           int a;
+           cin>>s>>v[i];
+           
+       }
+       sort(v.begin(),v.end() , [](int a ,int b)
+       {
+           return a<b;
+       });
+        long long int badness = 0;  //this was giving the wrong answer
+        for(int i=1;i<=n ;i++)
+       {
+           badness = badness+abs(v[i-1]-i);
+       }
+      cout<<badness<<endl;
+   }
+}
+int main() {
+    solve();
+}
+//biased standing using priority queue : O(nlongn)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve()
+{
+    int t;
+    cin>>t;
+
+   while(t--)
+   {
+       int n;
+       cin>>n;
+
+       priority_queue<int,vector<int>,greater<int>>pq;
+
+       for(int i = 0;i<n; i++)
+       {
+           string s;
+           int a;
+           cin>>s>>a;
+           pq.push(a);
+       }
+        long long int badness = 0;
+        for(int i=1;i<=n ;i++)
+       {
+           badness = badness+abs(pq.top()-i);
+           pq.pop();
+       }
+      cout<<badness<<endl;
+   }
+}
+int main() {
+    solve();
+}
+
+//solution using counting sort : O(n)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve()
+{
+    int t;
+    cin>>t;
+
+   while(t--)
+   {
+       int n;
+       cin>>n;
+
+       vector<int>v(n,0);
+       for(int i = 0;i<n; i++)
+       {
+           string s;
+           int a;
+           cin>>s>>v[i];
+           
+       }
+       vector<int>counting(n+1 ,0);
+       for(int i=0;i<n;i++)
+        counting[v[i]]++;
+
+       long long int badness = 0;
+        for(int i=1,rank =1 ;i<=n ;i++)
+        {
+            if(counting[i]>0)
+            {
+                badness +=  abs(rank - i);
+                rank++;
+                counting[i]--;
+                i--;
+            }
+        }
+      cout<<badness<<endl;
+   }
+}
+int main() {
+    solve();
+}
