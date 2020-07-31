@@ -209,3 +209,34 @@ int main(){
 
 	return 0;
 }
+//chopsticks problem codechef 
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve()
+{
+    int n,d;
+    cin>>n>>d;
+     
+    vector<int>v(n);
+    for(int i=0;i<n ;i++)
+    cin>>v[i];
+
+    sort(v.begin (), v.end());
+
+    int ans = 0;
+    for(int i =0 ;i<(n-1) ;i++)
+    {
+        int cur = v[i];
+        int next = v[i+1];
+        if(abs(cur-next)<=(d))  //not taking absolute gave error
+        {
+            ans++;
+            i++;
+        }
+    }
+    cout<<ans<<endl;
+}
+int main() {
+    solve();
+}
