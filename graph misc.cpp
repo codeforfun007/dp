@@ -159,6 +159,15 @@ int main()
 
 
 //codechef problem : RRDAG
+//Given a DAG(directed acyclic graph). 
+//Find out maximum number of edges that can be added into 
+//it so that it still remains a DAG. 
+//If there are multiple solutions which lead
+//to same maximum number of edges that can be
+//added, then you should output the
+//lexicographically smallest sequence of edges.
+
+//maximum number of edges that can be added to the DAG so that it is 
 #include<bits/stdc++.h>
 typedef long long  int ll;
 using namespace std;
