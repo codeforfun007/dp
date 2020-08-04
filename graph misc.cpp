@@ -157,6 +157,83 @@ int main()
     set1();
 }
 
+
+//codechef problem : RRDAG
+#include<bits/stdc++.h>
+typedef long long  int ll;
+using namespace std;
+
+int n;
+
+vector<vector<int>>mat(1502 ,vector<int>(1502,0));
+vector<int>out;
+vector<vector<int>>ans;
+ vector<bool>used;
+
+void solve2(int v)
+{
+    
+    for(int i =0 ;i<n ;i++)
+    {
+        if(i != v && mat[i][v] == 0 && used[i] == false )
+          ans.push_back({i+1 , v+1});
+    }
+
+    for(int i = 0;i<n ;i++)
+    {
+        if(mat[i][v] == 1)
+          out[i]--;
+    }
+   
+}
+void solve()
+{
+    used.assign( n, false);
+    
+    for(int j = n-1 ;j>=0 ;j--)
+    {
+        if(used[j] == false && out[j] == 0)
+        {
+           
+             used[j] = true;
+
+            solve2(j);
+
+           
+        }
+    }
+    
+    cout<<ans.size()<<endl;
+
+    for(vector<int>x : ans)
+    {
+            cout<<x[0]<<" "<<x[1]<<endl;
+    }
+
+}
+void set1()
+{
+   cin>>n;
+   
+   out.assign(n , 0);
+   for(int i=0;i<n;i++)
+   {
+       for(int j=0;j<n ;j++)
+      {
+          cin>>mat[i][j];
+
+          if(mat[i][j] == 1)
+            out[i]++;
+      }
+   }
+
+   solve();
+}
+int main()
+{
+    set1();
+}
+
 //gfg snake and ladder : minimum "dice throws" to reach destination
 
 #include<bits/stdc++.h>
