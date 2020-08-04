@@ -66,6 +66,96 @@ string findOrder(string dict[], int N, int K) {
     
     return ans;
 }
+//codeforces : fox and names 
+#include<bits/stdc++.h>
+typedef long long  int ll;
+using namespace std;
+
+
+int n;
+vector<string> dict;
+
+void solve()
+{
+    vector<int>ind(26 , 0);
+    vector<vector<int>>g( 26);
+    for(int i=0 ;i<n-1 ;i++)
+    {
+        string a = dict[i],b = dict[i+1];
+         
+         bool found = false;
+        for(int i=0; i<a.size() && i<b.size() ;i++ )
+        {
+            if(a[i] != b[i])
+            {
+                 found = true;
+                 int u = a[i] -'a';
+                 int v = b[i] - 'a';
+                 ind[v]++;
+                 g[u].push_back(v);
+                 break;
+            }
+        }
+        if(found == false && b.size()<a.size()) //this is the corner case which had to be handled explicitly
+		     //basically of all the character are same and size of next string is more than it is 
+		    //wrong ordering
+         {
+               cout<<"Impossible\n";
+               return;
+         }
+    }
+   queue<int>q;
+    for(int i= 0;i<=25 ;i++)
+    {
+        if(ind[i] == 0)
+          q.push(i);  //this part is also different //we have to print the complete list of characters
+	               //alien dictionary required printing of characters which are only present in string
+    }
+
+    string ans ="";
+
+    //vector<bool>vis(26 ,false)
+    while(!q.empty())
+    {
+        int cur = q.front();
+        
+        char ch = 'a' + cur;
+
+        q.pop();
+        
+       
+        ans= ans + ch;
+
+      
+
+        for(int child : g[cur])
+        {
+            if(--ind[child] == 0)
+              q.push(child);
+        }
+    }
+
+    if(ans.size() <26) 
+      cout<<"Impossible\n"; //in alien dict a valid ordering was always possible
+    else
+     cout<<ans<<endl;
+}
+void set1()
+{
+   
+   cin>>n;
+   dict.resize(n);
+   for(int i=0;i<n ;i++)
+   {
+       cin>>dict[i];
+   }
+
+   solve();
+}
+int main()
+{
+    set1();
+}
 
 //gfg snake and ladder : minimum "dice throws" to reach destination
 
