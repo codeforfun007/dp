@@ -243,7 +243,7 @@ int main() {
 	return 0;
 }
 //Atcoder dp j : logest path in directed acyclic graph
-
+//DP on DAG probelm of finding the longest path in DAG
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -284,4 +284,70 @@ int main(){
 	
 	cout<<ans;
 	
+}
+
+// codechef : chef and roads problem 
+//finding the number of paths from a given source to given destination in DAG
+
+//basically dp on DAG problem
+#include<bits/stdc++.h>
+typedef long long  int ll;
+using namespace std;
+
+vector<bool>vis ;
+const int kmod = 1e9+7 ;
+int n,m,p,q;
+
+vector<int>dp;
+vector<vector<int>>g;
+
+void dfs(int src)
+{
+    vis[src] = true;
+    
+    if(src == q)
+    {
+        dp[q] = 1;
+        return;
+    }
+    
+    int myans = 0 ;
+    for(int child : g[src])
+    {
+        if(vis[child]  == false)
+        {
+           dfs(child);
+
+        }
+        dp[src] =(dp[src] %kmod +dp[child]%kmod)%kmod;
+    }
+}
+
+ void solve()
+ {
+     dfs(p);
+
+     cout<<dp[p]<<endl;
+ }
+void set1()
+{
+    cin>>n>>m;
+    
+    dp.assign(n+1 , 0);
+    vis.assign( n+1 ,false);
+    g.assign(n+1,{ });
+    cin>>p>>q;
+
+    for(int i=0 ;i<m ;i++)
+    {
+        int u,v;
+        cin>>u>>v;
+        g[u].push_back(v);
+    }
+
+   solve();
+}
+int main()
+{
+    set1();
 }
