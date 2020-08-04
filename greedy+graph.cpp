@@ -74,3 +74,82 @@ int main()
 {
     set1();
 }
+
+
+//CSES : flight discount gave wrong answer
+
+#include<bits/stdc++.h>
+typedef long long  int ll;
+using namespace std;
+ 
+vector<vector<int>>g[100005];
+ int v,e;
+ 
+void solve()
+{
+ 
+    priority_queue<vector<ll>,vector<vector<ll>>,greater<vector<ll>>>pq;
+ 
+    pq.push({0 , 1 , 0});
+ 
+    vector<bool>vis(v+1 ,false);
+ 
+   ll msf = INT_MIN;
+ 
+   ll overallans= 1e18;
+    while(!pq.empty())
+    {
+        vector<ll> cur = pq.top();
+        
+        ll vtx = cur[1];
+ 
+        msf = max(cur[2] , msf);
+ 
+        pq.pop();
+        if(vtx == v)
+        {
+            ll ans = cur[0];
+ 
+            ans = ans - msf;
+ 
+            ans = ans + msf/2;
+ 
+            
+            overallans = min(overallans , ans);
+ 
+            continue;
+        }
+ 
+        if(vis[vtx] == true)
+        {
+            continue;
+        }
+        vis[vtx] = true;
+ 
+        for(vector<int> x : g[vtx])
+        {
+            if(vis[x[0]] == false)
+              pq.push({cur[0] + x[1] , x[0] , x[1]});
+        }
+    }
+ 
+    cout<<overallans<<endl;
+}
+void set1()
+{
+ 
+ 
+    cin>>v>>e;
+    for(int i=0 ;i<e ;i++)
+    {
+        int a,b,w;
+        cin>>a>>b>>w; 
+        
+        g[a].push_back({b ,w});
+    }
+    solve();
+}
+int main()
+{
+    set1();
+}
