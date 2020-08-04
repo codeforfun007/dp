@@ -290,6 +290,15 @@ int main(){
 //finding the number of paths from a given source to given destination in DAG
 
 //basically dp on DAG problem
+
+//The first step is to toposort the given graph.
+//If dp[u] be the number of paths from node u to node Q
+//then dp[u] = summation of dp[v] for all v for each edge 
+//directed from u to v.
+//We obtain dp[u] for each node u in the graph in reverse topological order.
+//Then dp[P] is the required answer.
+
+
 #include<bits/stdc++.h>
 typedef long long  int ll;
 using namespace std;
