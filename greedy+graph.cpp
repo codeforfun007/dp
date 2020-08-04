@@ -76,7 +76,7 @@ int main()
 }
 
 
-//CSES : flight discount gave wrong answer
+//CSES : flight discount gave wrong answer on 4/17 test cases
 
 #include<bits/stdc++.h>
 typedef long long  int ll;
