@@ -29,7 +29,8 @@ void solve( ll wtsum)
 
       if(pu!= pv)
       {
-          ans = (ans %kmod + ((1LL)*(size[pu])%kmod * (size[pv])%kmod * (wtsum%kmod))%kmod)%kmod;
+          ans = (ans %kmod + ((1LL)*(size[pu])%kmod * (size[pv])%kmod * (wtsum%kmod))%kmod)%kmod; //this has to be handled carefully 
+                             //without (1LL) it gave the wrong answer
 
           par[pu] = pv;
           
@@ -39,7 +40,7 @@ void solve( ll wtsum)
           
          // wtsum = wtsum - w;
       }
-      wtsum = wtsum - w;
+      wtsum = wtsum - w;  //weight should be decreased at every step
   }
   cout<<ans<<endl;
 }
