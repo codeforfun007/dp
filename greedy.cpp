@@ -240,3 +240,109 @@ void solve()
 int main() {
     solve();
 }
+
+//codeforces educational 93 D
+
+#include <bits/stdc++.h>
+
+
+
+using namespace std;
+
+void solve()
+{
+    
+
+
+   int rs,gs,bs;
+   cin>>rs>>gs>>bs;
+
+   vector<int>r(rs) ,b(bs),g(gs);
+   for(int i= 0 ; i<rs ;i++)
+   cin>>r[i];
+
+   for(int i= 0 ; i<gs ;i++)
+   cin>>g[i];
+
+   for(int i= 0 ; i<bs ;i++)
+   cin>>b[i];
+
+   sort(rbegin(r),rend(r) );
+   sort(rbegin(b) ,rend(b));
+   sort(rbegin(g) ,rend(g)) ;
+
+
+   int rp = 0 ,bp = 0,gp = 0;
+
+   long long int ans = 0;
+
+   priority_queue<pair<int ,int>>pq;
+
+   for( ; rp<rs && bp <bs && gp<gs ;) //0 , 1 ,2
+   {
+      
+       pq.push({b[bp] , 1}) ;
+
+       pq.push({g[gp] , 0});
+
+        pq.push({r[rp] , 2});
+
+
+       pair<int,int> f = pq.top();
+
+       pq.pop();
+       pair<int,int> s = pq.top();
+       pq.pop();
+        
+       cout<<f.first<<" "<<s.first<<endl;
+       ans = ans + (f.first)*(s.first);
+      
+      pair<int,int>left = pq.top();
+      pq.pop();
+      if(left.second == 0)
+      {
+          rp++;
+          bp++;
+      }
+      else if(left.second == 1)
+      {
+          rp++;
+          gp++;
+      }
+      else{
+           gp++;
+          bp++;
+         
+      }
+   }
+
+   if(rp == rs)
+   {
+       for( ; bp<bs && gp<gs ;bp++ ,gp++ )
+       {
+           ans = ans + b[bp]*g[gp] ;
+       }
+   }
+    if(bp == bs)
+   {
+       for( ; rp<rs && gp<gs ;rp++ ,gp++ )
+       {
+           ans = ans + r[rp]*g[gp] ;
+       }
+   }
+    if(gp == gs)
+   {
+       for( ; bp<bs && rp<rs ; bp++,rp++)
+       {
+           ans = ans + b[bp]*r[rp] ;
+       }
+   }
+
+   cout<<ans<<endl;
+}
+int main() {
+   
+
+   solve();
+}
+
