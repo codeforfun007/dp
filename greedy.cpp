@@ -104,7 +104,58 @@ int main()
 	return 0;
 }
 
+//gfg : fractional knapsack
 
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+ {
+	//code
+	
+	int t;
+	cin>>t;
+	
+	while(t--)
+	{
+	    int n,w;
+	    cin>>n>>w;
+	    
+	    vector<vector<int>>items;
+	    
+	    for(int i = 0 ;i<n ;i++)
+	    {
+	        int a ,b; 
+	        cin>>a>>b;
+	        
+	        items.push_back({a , b});
+	    }
+	    
+	    sort(items.begin() ,items.end() ,[](vector<int>a ,vector<int>b)
+	    {
+	        return (1.0 *a[0]/a[1]) > (1.0 * b[0]/b[1]);
+	    });
+	    
+	    double profit =  0.0;
+	    
+	    for(vector<int> v : items)
+	    {
+	        if( w >= v[1])
+	        {
+	            profit = profit + v[0]*1.0;
+	            w = w - v[1];
+	        }
+	        else
+	        {
+	            profit = profit +(v[0]/(v[1]*1.0))*w ;
+	            w = 0;
+	            break;
+	        }
+	    }
+	    printf("%.2f\n" ,profit);  //this is the most important step
+		//two round up upto two decimal places
+	}
+	return 0;
+}
 //biased standing :spoj problem sorting solution O(n)
 #include <bits/stdc++.h>
 using namespace std;
