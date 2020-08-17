@@ -67,3 +67,70 @@ priority_queue<vector<int>,vector<vector<int>>,comp>pq;
         return ans;
     }
 };
+
+//leetcode 948 :bag of tokens
+class Solution {
+public:
+    int bagOfTokensScore(vector<int>& tokens, int P) {
+        
+        
+        int power = P;
+        priority_queue<vector<int> ,vector<vector<int>>,greater<vector<int>>>lpq;
+        
+        priority_queue<vector<int>>gpq;
+        
+        int n =(int) tokens.size();
+        
+        if(n == 0)
+            return 0;
+        
+        vector<int>used( n ,-1);
+        
+        for(int i = 0;i<n ;i++)
+        {
+            lpq.push({tokens[i] , i});
+            gpq.push({tokens[i] ,i });
+        }
+        
+        int point  = 0;
+        int maxpoint  =0 ;
+        
+        if(lpq.top()[0] > power) //handling base case when power is less than minimum power of token vector
+            return 0;
+        while(! lpq.empty() )
+        {
+            vector<int>cur = lpq.top();
+            
+             lpq.pop();
+            
+            if(used[cur[1]] != -1)
+                continue;
+            
+            used[cur[1]] = 1;
+          
+            
+           while(power < cur[0] && !gpq.empty())
+           {
+               vector<int>r = gpq.top();
+               
+               gpq.pop();
+               
+               if(used[r[1]] != -1)
+                   continue;
+               used[r[1]] = 1;
+               
+               power = power + r[0] ;
+               point--;
+           }
+            
+            if(power < cur[0])
+                return maxpoint;
+            power = power - cur[0];
+            point++;
+            
+            if(point>maxpoint)
+                maxpoint = point;
+        }
+        return maxpoint;
+    }
+};
