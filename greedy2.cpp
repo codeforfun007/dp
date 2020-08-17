@@ -134,3 +134,79 @@ public:
         return maxpoint;
     }
 };
+
+//minimum pltforms in a train station problem
+#include<bits/stdc++.h>
+using namespace std;
+
+int convert(string &a)
+{
+    
+     int t = 0;
+     
+     t += ( (a[0]-'0')*10)*3600 ;
+     
+     t +=  (a[1] - '0')*3600;
+     
+     
+     t += ((a[2] - '0')*10)*60 ;
+     
+     t += (a[3] - '0')*60 ;
+    
+    //cout<<t<<endl;
+    return t;
+}
+int main()
+ {
+	//code
+	
+	int t;
+	cin>>t;
+	
+	while(t--)
+	{
+	    int n;
+	    cin>>n;
+	    
+	    string a ;
+	    
+	    vector<int>arr(n),dep(n);
+	    
+	    for(int i = 0 ;i<n ;i++)
+	    {
+	        cin>>a;
+	        arr[i] = convert(a);
+	    }
+	    for(int i = 0 ;i<n ;i++)
+	    {
+	        cin>>a;
+	        dep[i] = convert(a);
+	    }
+	    
+	    sort(arr.begin() ,arr.end());
+	    
+	    sort(dep.begin() ,dep.end());
+	    int i = 1 ,j = 0, req = 1 ,max_req =1 ;
+	    
+	    while(i < n && j<n)
+	    {
+	         // If next event in sorted order is arrival, 
+            // increment count of platforms needed 
+	        if(arr[i]<=dep[j])
+	        {
+	            i++;
+	            req++;
+	        }
+	         // Else decrement count of platforms needed 
+	        else if(arr[i]>dep[j])
+	        {
+	            j++;
+	            req--;
+	        }
+	        
+	       max_req = max(max_req , req);
+	    }
+	    cout<<max_req<<endl;
+	}
+	return 0;
+}
