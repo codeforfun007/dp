@@ -42,6 +42,69 @@ int main() {
     solve();
 }
 
+//gfg : job sequencing
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+ {
+	//code
+	
+	int t;
+	cin>>t;
+	
+	while(t--)
+	{
+	    int n ;
+	    cin>>n;
+	    
+	    vector<vector<int>>job ;
+	    
+	    for(int i =0 ;i<n ;i++)
+	    {
+	        int a,b,c;
+	        cin>>a>>b>>c;
+	        
+	        job.push_back({a, b , c});
+	    }
+	    
+	    sort(job.begin() , job.end() ,[] (vector<int>& a ,vector<int>& b)
+	    {
+	        return a[2]>b[2];
+	    }
+	    );
+	    
+	    vector<int>slot(n+1 , -1);
+	    //slot[k] : the job whose deadline is k+1
+	    
+	    for(int a = 0;a< n ;a++)
+	    {
+	       int deadline = job[a][1] ;
+	       
+	       for(int i = min(deadline-1 ,n-1); i>=0 ;i--)
+	       {
+	           if(slot[i] == -1)
+	           {
+	               slot[i] = a; //storing the index of job at each slot
+	               break;
+	           }
+	       }
+	    }
+	    int profit  = 0;
+	    int act  =0 ;
+	    for(int i = 0;i< n ;i++)
+	    {
+	        if(slot[i] == -1)
+	         continue;
+	        int idx = slot[i];
+	        profit = profit + job[idx][2];
+	        act++;
+	    }
+	    cout<<act<<" "<<profit<<endl;
+	}
+	return 0;
+}
+
+
 //biased standing :spoj problem sorting solution O(n)
 #include <bits/stdc++.h>
 using namespace std;
