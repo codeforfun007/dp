@@ -132,7 +132,7 @@ int main()
 	    
 	    sort(items.begin() ,items.end() ,[](vector<int>a ,vector<int>b)
 	    {
-	        return (1.0 *a[0]/a[1]) > (1.0 * b[0]/b[1]);
+	        return (1.0 *a[0]/a[1]) > (1.0 * b[0]/b[1]); //without typecasting it will give the wrong answer
 	    });
 	    
 	    double profit =  0.0;
@@ -141,12 +141,12 @@ int main()
 	    {
 	        if( w >= v[1])
 	        {
-	            profit = profit + v[0]*1.0;
+	            profit = profit + v[0]*1.0; //typecasting
 	            w = w - v[1];
 	        }
 	        else
 	        {
-	            profit = profit +(v[0]/(v[1]*1.0))*w ;
+	            profit = profit +(v[0]/(v[1]*1.0))*w ; //typecasting
 	            w = 0;
 	            break;
 	        }
