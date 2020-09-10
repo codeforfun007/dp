@@ -241,3 +241,108 @@ int main() {
     cout<<solve2(dp , freq);
 	return 0;
 }
+//maximum ans minimum values using operators '* and '+'
+#include <iostream>
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long 
+
+ll cal(ll a , ll b ,char op)
+{
+    switch(op)
+    {
+        case '+':
+        return a+ b;
+        case '*':
+        return a*b;
+    }
+    return 1;
+}
+ll solve(int si, int ei ,int n ,vector<vector<ll>> &dp , string &s)
+{
+    if(ei >= n || si < 0) 
+     return 0;
+    
+    if(dp[si][ei] != -1)
+     return dp[si][ei];
+   
+   
+   ll omax = -1;
+    for(int i = si + 1 ; i < ei ;i = i+ 2)
+    {
+       
+       char op = s[i] ;
+
+       ll left = i - 1 > si ? solve(si , i-1 , n , dp , s) : s[i-1] - '0';
+
+       ll right = i + 1 < ei?solve(i+1 , ei, n,dp ,s) : s[i+1] - '0';
+
+       ll my = cal(left ,right , op);
+    
+       //cout<<my<<"\n";
+       if(my > omax)
+       omax = my;
+    }
+
+    return dp[si][ei] = omax;
+}
+ll solve_min(int si, int ei ,int n ,vector<vector<ll>> &dp , string &s)
+{
+    if(ei >= n || si < 0) 
+     return 0;
+    
+    if(dp[si][ei] != -1)
+     return dp[si][ei];
+   
+   
+   ll omin = 1e18+ 3;
+    for(int i = si + 1 ; i < ei ;i = i+ 2)
+    {
+       
+       char op = s[i] ;
+
+       ll left = i - 1 > si ? solve_min(si , i-1 , n , dp , s) : s[i-1] - '0';
+
+       ll right = i + 1 < ei?solve_min(i+1 , ei, n,dp ,s) : s[i+1] - '0';
+
+       ll my = cal(left ,right , op);
+    
+       //cout<<my<<"\n";
+       if(my < omin)
+       omin = my;
+    }
+
+    return dp[si][ei] = omin;
+}
+int main() {
+    
+
+    int t;
+    cin>>t;
+
+    while(t--)
+    {
+        string s;
+        cin>>s;
+
+        int n = s.length();
+
+        vector<vector<ll>>dp(n , vector<ll>(n ,-1) );
+        ll ans = solve( 0 , n-1 , n , dp , s );
+        
+        /*for(int i = 0 ; i < n ;i++)
+        {
+            for(int j = 0 ; j<n ;j++)
+            {
+                cout<<dp[i][j]<<"    ";
+            }
+            cout<<"\n";
+        }*/
+        vector<vector<ll>>dp2(n , vector<ll>(n ,-1) );
+
+        ll ans2 = solve_min(0 , n-1 , n , dp2 , s);
+        cout<<ans<<" "<<ans2<<endl;
+    }
+}
